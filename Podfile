@@ -7,5 +7,5 @@ target 'StripePayment' do
 
   # Pods for StripePayment
 pod 'Stripe'
-
+pod 'Alamofire'
 end

@@ -19,7 +19,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        STPPaymentConfiguration.shared().publishableKey = "pk_test_HLWmeQQcWQHaI8TtiMgqpWEu"
+       // STPPaymentConfiguration.shared().publishableKey = "pk_test_qbjx68qwygLRCgKsjmiYKQ5d"//"pk_test_HLWmeQQcWQHaI8TtiMgqpWEu"
+        
+         Stripe.setDefaultPublishableKey("pk_test_qbjx68qwygLRCgKsjmiYKQ5d")
         return true
     }
 
