@@ -24,7 +24,7 @@ class CustomVC: UIViewController {
         super.viewDidLoad()
         self.title = "Custom"
        
-          msgBox.text = ""
+       //   msgBox.text = ""
         
         // Add payment card text field to view
     }

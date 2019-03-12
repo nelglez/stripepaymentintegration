@@ -105,7 +105,7 @@
             </objects>
             <point key="canvasLocation" x="1079.2" y="133.5832083958021"/>
         </scene>
-        <!--StandardVC-->
+        <!--Title-->
         <scene sceneID="vT3-ES-jWV">
             <objects>
                 <viewController id="LIb-FU-Sou" customClass="StandardVC" customModule="StripePayment" customModuleProvider="target" sceneMemberID="viewController">
@@ -142,6 +142,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Z6w-If-LXl"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Title" id="MUe-pZ-VKl">
+                        <barButtonItem key="rightBarButtonItem" title="Shipping" id="UD1-Z0-Uhv">
+                            <connections>
+                                <action selector="shippingBarButtonTapped:" destination="LIb-FU-Sou" id="prB-Yn-QTC"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="msgBox" destination="4Qd-Lh-E0A" id="6ng-3M-G2v"/>
                     </connections>

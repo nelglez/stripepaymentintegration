@@ -9,9 +9,13 @@
 import UIKit
 import Stripe
 
-class StandardVC: UIViewController, STPAddCardViewControllerDelegate {
+class StandardVC: UIViewController, STPAddCardViewControllerDelegate, STPShippingAddressViewControllerDelegate {
+   
     
     var modelController = ModelController()
+    
+    var selectedAddress = String()
+    var selectedShippingMethod = PKShippingMethod()
 
     @IBOutlet weak var msgBox: UITextView!
     
@@ -114,4 +118,73 @@ class StandardVC: UIViewController, STPAddCardViewControllerDelegate {
 //        msgBox.text = "\(String(describing: allFields))"
 //        completion(nil)
 //    }
+    
+    @IBAction func shippingBarButtonTapped(_ sender: UIBarButtonItem) {
+        
+        handleShippingButtonTapped()
+        
+        
+        
+    }
+    
+    func handleShippingButtonTapped() {
+        STPPaymentConfiguration.shared().requiredShippingAddressFields = [.postalAddress, .phoneNumber, .emailAddress, .name]
+        // Setup shipping address view controller
+        let shippingAddressViewController = STPShippingAddressViewController()
+        shippingAddressViewController.delegate = self as STPShippingAddressViewControllerDelegate
+        
+        // Present shipping address view controller
+        let navigationController = UINavigationController(rootViewController: shippingAddressViewController)
+        present(navigationController, animated: true)
+    }
+    
+    
+    func shippingAddressViewControllerDidCancel(_ addressViewController: STPShippingAddressViewController) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func shippingAddressViewController(_ addressViewController: STPShippingAddressViewController, didEnter address: STPAddress, completion: @escaping STPShippingMethodsCompletionBlock) {
+        
+        print("didEnterAddress")
+        print(address)
+        let upsGroundShippingMethod = PKShippingMethod()
+        upsGroundShippingMethod.amount = 0.00
+        upsGroundShippingMethod.label = "UPS Ground"
+        upsGroundShippingMethod.detail = "Arrives in 3-5 days"
+        upsGroundShippingMethod.identifier = "ups_ground"
+        
+        let fedExShippingMethod = PKShippingMethod()
+        fedExShippingMethod.amount = 5.99
+        fedExShippingMethod.label = "FedEx"
+        fedExShippingMethod.detail = "Arrives tomorrow"
+        fedExShippingMethod.identifier = "fedex"
+        
+        if address.country == "US" {
+            let availableShippingMethods = [upsGroundShippingMethod, fedExShippingMethod]
+            let selectedShippingMethod = upsGroundShippingMethod
+            
+            completion(.valid, nil, availableShippingMethods, selectedShippingMethod)
+        }
+        else {
+            completion(.invalid, nil, nil, nil)
+        }
+    }
+    
+    func shippingAddressViewController(_ addressViewController: STPShippingAddressViewController, didFinishWith address: STPAddress, shippingMethod method: PKShippingMethod?) {
+        print("didFinishWith")
+        // Save selected address and shipping method
+        
+        selectedAddress = address.line1!
+         selectedShippingMethod = method!
+        
+        
+        debugPrint(address.line1! as Any)
+        debugPrint(method as Any)
+        
+        // Dismiss shipping address view controller
+        dismiss(animated: true)
+    }
+    
+    
+    
 }
